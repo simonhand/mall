@@ -1,0 +1,54 @@
+better-scroll
+解决滚多商品界面卡顿，betterscroll中的滚动视口提前确定了在图片还没异步加载好的时候
+原因是因为better不能及时刷新加载好图片后页面可滑动视口高度，因为图片会把每个gooditem的高度撑大
+对于bscroll进行优化，用vuex事件优化或者事件总线$bus
+通过重新在man.js中的new Vue实例来作为事件总线
+bus > 总线
+关键代码：
+ Vue.prototype.$bus = new Vue();
+ this.$bus.$emit("事件名称",参数);
+ this.$bus.$on("on",callback(参数));
+
+
+性能优化
+//
+ refresh(){
+      this.scroll && this.scroll.refresh();
+    }
+ 原refresh函数是每次加载一次图片就要调用该函数一次请求至少执行30次，这是完全没有必要的
+ 解决方案设置防抖机制，节流
+ // 防抖函数  //这里delay不能设置大了，大了就会出现卡顿，因为异步函数本身就是在最后执行的
+     debounce(fun,delay){
+        let timer = null;
+        return function (...args){
+          timer && clearTimeout(timer);
+          timer = setTimeout(() => {
+            fun.apply(this,args);
+          },delay);
+        }
+      }
+在bscroll中使tab-control停留
+不能在mounted中获取因为这个时候图片还没有加载好计算出来的高度不准确
+一开始我以为对bscroll监听滚动位置，到指定位置设置fixed然而这是想当然的
+bscroll中会改变内部元素的tranlate的属性值
+这样的话得另辟蹊径才行，这样在nva下面设置一个隐藏的tabcontrol
+这样的话等到滚动到出发位置隐藏的tabcontrol出现在该出现的位置“顶替”
+跟随bscroll跑掉的taocontrol,既然那个control想和bscorl私奔
+那我们就来个替身代替它原有的位置但是这样又一个问题的了，我在私奔掉的
+那个tabcontrol上选中的新款还是流行还是其他的我们替身它不知道嗷
+那怎么办呢，这就涉及到vue的data(){}为什么涉及成函数的返回值样式了，
+之所以vue在data上涉及成函数返回值就是为了相同的组件间不能共享数据
+专业说就是组件不能只是浅拷贝而是深拷贝，我们现在要解决的便是这如何解
+决这这两个组件间数据需要浅拷贝，这个不难用一个obj定义，成员变量就是currentIndex
+即可
+关键代码
+const obj = {
+  currentIndex:0
+}
+data(){
+    return {
+      obj,
+    }
+ },
+
+ 想了想这样的方法还是不可取
