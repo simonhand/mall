@@ -52,3 +52,19 @@ data(){
  },
 
  想了想这样的方法还是不可取
+
+
+点击其他页面返回页面不可销毁
+离开时记录位置，重新进入在回到记录的位置
+
+点击一个商品详情返回首页在点击其他的商品，图片还是第一个
+
+
+报错vue.runtime.esm.js?2b0e:619 [Vue warn]: Error in render: "TypeError: Cannot read property 'length' of undefined"
+解决方法时下面的v-if 代码
+  <div class="info-service" v-if="Object.keys(goodsInfo).length !== 0">
+      <span class="info-service-item" v-for="index in goodsInfo.services.length-1"  :key="index">
+        <img :src="goodsInfo.services[index-1].icon">
+        <span>{{goodsInfo.services[index-1].name}}</span>
+      </span>
+    </div>

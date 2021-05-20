@@ -1,6 +1,7 @@
 <template>
-  <div class="goods-item">
-    <img :src="good.show.img" alt="" @load="imgLoad">
+  <div class="goods-item" @click="itemClick()">
+    <img v-if="good.show" :src="good.show.img" alt="" @load="imgLoad">
+    <img v-else :src="good.image" alt="" @load="imgLoad">
     <div class="goods-info">
       <p>{{good.title}}</p>
       <span class="price">{{good.price}}</span>
@@ -21,7 +22,16 @@ export default {
   },
   methods:{
     imgLoad(){
-      this.$bus.$emit("itemImgLoad");
+      this.$bus.$emit("itemImageLoad")
+    },
+    itemClick(){
+      // console.log("跳转详情页");
+      if (this.good.iid) {
+        this.$router.push('/detail/' + this.good.iid)
+      }
+      else {
+        this.$router.push('/detail/' + this.good.item_id);
+      }
     }
   }
 

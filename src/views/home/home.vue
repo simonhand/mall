@@ -5,7 +5,7 @@
     </nav-bar>
     <tab-control  :titles="['流行','新款','精选']"
                   @TabControlClick="tabcontrolclick"
-                  ref="tabControl"
+                  ref="tabControl1"
                   :class="{tabfixed: this.isTabFixed}"
     />
     <scroll class="content" ref="scroll"
@@ -18,7 +18,7 @@
       <feature-view/>
       <tab-control  :titles="['流行','新款','精选']"
                     @TabControlClick="tabcontrolclick"
-                    ref="tabControl"
+                    ref="tabControl2"
 
       />
       <goods-list :goods="ShowGoodType"/>
@@ -37,10 +37,12 @@ import NavBar from "components/common/nvabar/NavBar";
 import BackTop from "@/components/content/backtop/BackTop";
 import Scroll from "@/components/common/scorll/Scroll";
 
+import {itemListenerMixin} from "@/common/mixin";
 import {getHomeMultidata,getHomeGoods} from "network/home";
 
 export default {
   name: "Home",
+  mixins:[itemListenerMixin],
   data(){
     return{
       banners:[],
@@ -53,7 +55,8 @@ export default {
       },
       isShowBackTop:false,
       topOffsetTop:0,
-      isTabFixed:false
+      isTabFixed:false,
+      saveY:0,
     }
   },
   components:{
@@ -71,17 +74,6 @@ export default {
     this.getHomeGoods("pop")
     this.getHomeGoods("new")
     this.getHomeGoods("sell")
-  },
-  mounted() {
-   //开始对图片加载重新刷新
-    const refresh = this.debounce(this.$refs.scroll.refresh, 0);
-    //这里不能设置大了，大了就会出现卡顿，因为异步函数本身就是在最后执行的
-    this.$bus.$on("itemImgLoad",() =>{
-      // this.$refs.scroll.refresh();
-      refresh();
-    });
-
-
   },
   methods:{
     getHomeMultidata(){
@@ -105,6 +97,8 @@ export default {
     tabcontrolclick(item){
       let arr = ['pop','new','sell']
       this.goodsType = arr[item];
+      this.$refs.tabControl1.currentIndex = item;
+      this.$refs.tabControl2.currentIndex = item;
     },
     backTopClick(){
       this.$refs.scroll.backTop(0,0);
@@ -124,25 +118,27 @@ export default {
     finishPullUp(){
       this.$refs.scroll.finishPullUp()
     },
-    //防抖函数
-    debounce(fun,delay){
-      let timer = null;
-      return function (...args){
-        timer && clearTimeout(timer);
-        timer = setTimeout(() => {
-          fun.apply(this,args);
-        },delay);
-      }
-    },
     swiperImgLoad(){
-      // console.log(this.$refs.tabControl.$el.offsetTop);
-      this.topOffsetTop = this.$refs.tabControl.$el.offsetTop;
-    }
+      this.topOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+    },
+
   },
   computed:{
     ShowGoodType(){
       return this.goods[this.goodsType].list
     }
+  },
+  activated() {
+    // console.log("activated"+this.saveY);
+    this.$refs.scroll.scroll.refresh();
+    setTimeout(()=>{
+      this.$refs.scroll.scroll.scrollTo(0,this.saveY,0);
+    },0)
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getscrollY();
+    // console.log("deactivated"+this.saveY);
+    this.$bus.$off("homeItemImgLoad", this.itemImgListener)
   }
 }
 </script>
@@ -156,11 +152,6 @@ export default {
  .home-nav{
    background: -webkit-linear-gradient(left, #FA5A55, #FA994D);
    color: white;
-   /*position: fixed;*/
-   /*top: 0;*/
-   /*right: 0;*/
-   /*left: 0;*/
-   /*z-index: 1;*/
  }
 .tabfixed{
   position: fixed;

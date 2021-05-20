@@ -9,6 +9,7 @@
 
 <script>
 import BScroll from "better-scroll";
+import {debounce} from "@/common/utils";
 export default {
   name: "Scroll",
   props:{
@@ -34,7 +35,8 @@ export default {
     })
     this.scroll.on("scroll",(position) => {
       // console.log(position);
-      this.$emit('scrollTop', position);
+      debounce( this.$emit('scrollTop', position),1000)
+
     })
     // 监听上拉事件
     this.scroll.on('pullingUp',() => {
@@ -51,7 +53,11 @@ export default {
     },
     refresh(){
       // console.log("hahaha")
+      // console.log("没有防抖");
       this.scroll && this.scroll.refresh();
+    },
+    getscrollY(){
+      return this.scroll ? this.scroll.y : 0;
     }
   }
 }

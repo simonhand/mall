@@ -1,6 +1,6 @@
 <template>
   <div class="tab-control">
-    <div v-for="(item,index) in titles" class="tab-control-item" :class="{active : obj.currentIndex === index}"
+    <div v-for="(item,index) in titles" class="tab-control-item" :class="{active : currentIndex === index}"
           @click = "itemClick(index)">
       <span>{{item}}</span>
     </div>
@@ -8,9 +8,7 @@
 </template>
 
 <script>
-const obj = {
-  currentIndex:0
-}
+
 export default {
   name: "TabControl",
   props:{
@@ -23,12 +21,12 @@ export default {
   },
   data(){
     return {
-      obj,
+      currentIndex:0,
     }
   },
   methods:{
     itemClick:function (index){
-      this.obj.currentIndex = index;
+      this.currentIndex = index;
       this.$emit("TabControlClick",index);
     }
   }
