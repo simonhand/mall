@@ -104,7 +104,7 @@ export default {
       if (this.scrollY >= this.itemToY[1]-44 && this.scrollY < this.itemToY[2]-44){
         this.$refs.detailnavbar.currentIndex = 1;
       }
-      if ( this.scrollY > this.itemToY[2]-44 && this.scrollY <= this.itemToY[3]-44){
+      if ( this.scrollY >= this.itemToY[2]-44 && this.scrollY < this.itemToY[3]-44){
         this.$refs.detailnavbar.currentIndex = 2;
       }
       if ( this.scrollY >= this.itemToY[3]-44){
