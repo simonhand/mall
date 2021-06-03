@@ -24,6 +24,8 @@ export default {
   methods:{
     itemClick(){
       this.$router.replace(this.path);
+      // this.$router.options.routes[1].path.split("_")[0]
+      
     }
   },
   computed:{

@@ -2,6 +2,7 @@
   <div id="home">
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
+      <div slot="right">购物车</div>
     </nav-bar>
     <tab-control  :titles="['流行','新款','精选']"
                   @TabControlClick="tabcontrolclick"
@@ -150,9 +151,9 @@ export default {
   position: relative;
 }
  .home-nav{
-  line-height: 44px;
    background: -webkit-linear-gradient(left, #FA5A55, #FA994D);
    color: white;
+   height: 30px;
  }
 .tabfixed{
   position: fixed;

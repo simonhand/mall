@@ -171,7 +171,6 @@ export default {
 
 <style scoped>
 .nav{
-  line-height: 44px;
   background: -webkit-linear-gradient(left, #FA5A55, #FA994D);
   color: white;
 }

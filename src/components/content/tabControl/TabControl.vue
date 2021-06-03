@@ -36,6 +36,7 @@ export default {
 <style scoped>
 .tab-control{
   display: flex;
+  white-space: nowrap;
   text-align: center;
   font-size: 16px;
   background-color: #fff;
@@ -54,4 +55,5 @@ export default {
 .active span{
   border-bottom: 3px solid var(--color-high-text);
 }
+
 </style>

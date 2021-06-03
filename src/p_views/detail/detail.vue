@@ -98,10 +98,11 @@ export default {
     contentScroll(position){
       this.scrollY = - position.y;
       this.isShowBackTop = -position.y > 1000;
-      debounce(this.scrollControlNavBar(),800);//因为这里多次执行因此要加防抖
-      // console.log("防抖");
+      console.log("将调用防抖");
+      debounce(this.scrollControlNavBar(),800)//因为这里多次执行因此要加防抖
     },
     scrollControlNavBar(){
+      console.log("复制了");
       if (this.scrollY >= this.itemToY[1]-44 && this.scrollY < this.itemToY[2]-44){
         this.$refs.detailnavbar.currentIndex = 1;
       }
@@ -161,7 +162,6 @@ export default {
   height: 100vh;
 }
 .nva{
-  line-height: 44px;
   position: relative;
   z-index: 4;
 }

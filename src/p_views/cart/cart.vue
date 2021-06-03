@@ -41,7 +41,6 @@ export default {
 
 <style scoped>
 .navbar{
-  line-height: 44px;
   position: relative;
   background: -webkit-linear-gradient(left, #FA5A55, #FA994D);
   color: white;

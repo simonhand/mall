@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import NavBar from 'components/common/navbar/NavBar'
+import NavBar from "@/components/common/nvabar/NavBar";
 import UserInfo from '@/views/profile/childComps/UserInfo'
 import ListView from '@/views/profile/childComps/ListView'
 export default {
@@ -24,7 +24,7 @@ export default {
 
 <style scoped>
 .nav-bar {
-    background: var(--color-tint);
+    background: -webkit-linear-gradient(left, #FA5A55, #FA994D);
     color: #fff;
     font-weight: bold;
 }
